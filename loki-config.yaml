@@ -4,7 +4,7 @@ server:
   http_listen_port: 3100
 
 common:
-  path_prefix: /tmp/loki
+  path_prefix: /loki
   replication_factor: 1
   ring:
     kvstore:
@@ -13,16 +13,13 @@ common:
 schema_config:
   configs:
     - from: 2026-01-01
-      store: boltdb-shipper
-      object_store: s3
-      schema: v11
+      store: tsdb
+      object_store: filesystem
+      schema: v13
       index:
         prefix: index_
         period: 24h
 
 storage_config:
-  aws:
-    s3forcepathstyle: true
-    bucketnames: ${S3_BUCKET}
-    endpoint: ${S3_ENDPOINT}
-    region: ${S3_REGION}
+  filesystem:
+    directory: /loki/chunks
